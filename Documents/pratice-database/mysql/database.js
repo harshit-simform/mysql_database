@@ -6,6 +6,13 @@ export async function getAllUser(req, res) {
   return result;
 }
 
+export async function getUserData(req, res) {
+  const result = await pool.query(
+    "SELECT u.name , o.id as order_id , p.title as product_name , order_status, order_date , delivery_date , (delivery_date - order_date) as Expexted_delivery_day  from order_details od JOIN products p ON od.product_id = p.id JOIN orders o ON od.order_id = o.id JOIN user u ON o.user_id = u.id"
+  );
+  return result;
+}
+
 export async function createUser(req, res) {
   let { name, email, password, address } = req.body;
   password = await bcrypt.hash(password, 10);

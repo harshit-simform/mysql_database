@@ -11,6 +11,7 @@ import {
   mostPurchasedProduct,
   mostExpensiveOrder,
   leastExpensiveOrder,
+  getUserData,
 } from "./database.js";
 const app = express();
 import productRouter from "./product/productController.js";
@@ -66,6 +67,20 @@ app.delete("/user/:id", async (req, res, next) => {
     res.status(204).json({
       status: "success",
       message: "User deleted successfully!",
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+});
+app.get("/user_data", async (req, res, next) => {
+  try {
+    const result = await getUserData();
+    res.status(200).json({
+      status: "success",
+      user: result[0],
     });
   } catch (err) {
     res.status(400).json({
@@ -188,5 +203,3 @@ app.use(/^\/products?/, productRouter);
 app.use(/^\/orders?/, orderRouter);
 
 export default app;
-
-mostExpensiveOrder;
